@@ -1,0 +1,8 @@
+# Dependencias mínimas del proyecto
+# Nota: No se incluyen frameworks de ML de alto nivel (como TensorFlow, PyTorch o scikit-learn).
+# Toda la red neuronal y métricas se implementarán desde cero con NumPy.
+
+numpy>=1.26.0
+Pillow>=10.0.0
+matplotlib>=3.8.0
+pytest>=8.0.0

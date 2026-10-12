@@ -1,0 +1,32 @@
+# Entornos virtuales
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache y bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+.pytest_cache/
+
+# Datos crudos y procesados descargados (no versionar datasets grandes en git)
+data/downloads/
+data/raw/
+data/processed/
+
+# Modelos y pesos entrenados pesados
+models/*.npz
+models/*.npy
+
+# Salidas y logs
+outputs/logs/
+outputs/figures/*.png
+outputs/figures/*.jpg
+
+# Archivos de sistema y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
