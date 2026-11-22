@@ -1,8 +1,16 @@
-# Dependencias mínimas del proyecto
-# Nota: No se incluyen frameworks de ML de alto nivel (como TensorFlow, PyTorch o scikit-learn).
-# Toda la red neuronal y métricas se implementarán desde cero con NumPy.
+# Dependencias del proyecto
+# Nota importante: No se incluyen frameworks de ML de alto nivel (como TensorFlow, PyTorch o scikit-learn).
+# Toda la red neuronal, entrenamiento y métricas están implementadas desde cero con NumPy.
 
 numpy>=1.26.0
 Pillow>=10.0.0
 matplotlib>=3.8.0
 pytest>=8.0.0
+
+# OpenCV se utiliza EXCLUSIVAMENTE para la captura de fotogramas de la webcam y visualización GUI (Fase 9).
+# Queda prohibido el uso de OpenCV DNN o clasificadores preentrenados.
+opencv-python>=4.9.0
+
+# Comunicación serial (UART) con microcontroladores (ESP32, Arduino) para control de actuadores (Fase 10)
+pyserial>=3.5.0
+

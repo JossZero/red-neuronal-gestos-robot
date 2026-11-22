@@ -36,20 +36,26 @@ El objetivo principal es académico: comprender a fondo la formulación matemát
 │   ├── figures/                # Gráficas de entrenamiento y matrices de confusión
 │   └── logs/                   # Historial de métricas (CSV)
 ├── scripts/
-│   ├── download_dataset.py     # Script para descargar y verificar el dataset
-│   ├── explore_dataset.py      # Script de exploración visual y estadística
-│   └── prepare_dataset.py      # Script para preprocesar y particionar los datos
+│   ├── download_dataset.py       # Script para descargar y verificar el dataset
+│   ├── explore_dataset.py        # Script de exploración visual y estadística
+│   ├── prepare_dataset.py        # Script para preprocesar y particionar los datos
+│   └── capture_robot_dataset.py  # Asistente de captura de gestos propios para el robot
 ├── src/
 │   ├── data/
-│   │   └── preprocess.py       # Lógica de preprocesamiento y aumento de datos
+│   │   └── preprocess.py         # Lógica de preprocesamiento y extracción de características
 │   ├── model/
-│   │   └── neural_network.py   # Implementación matemática de la red con NumPy
-│   ├── train.py                # Bucle de entrenamiento y validación
-│   ├── evaluate.py             # Evaluación en test y cálculo de métricas
-│   └── predict_image.py        # Inferencia con imágenes individuales
+│   │   └── neural_network.py     # Implementación matemática de la red con NumPy
+│   ├── train.py                  # Bucle de entrenamiento por mini-lotes
+│   ├── evaluate.py               # Evaluación en test y matriz de confusión
+│   ├── predict_image.py          # Inferencia con imágenes individuales
+│   ├── webcam_demo.py            # Demostración interactiva en vivo con cámara
+│   └── robot_controller.py       # Capa de control robótico seguro y consenso temporal
 └── tests/
-    ├── test_preprocessing.py   # Pruebas de preprocesamiento
-    └── test_neural_network.py  # Pruebas unitarias de las operaciones de la red
+    ├── test_preprocessing.py     # Pruebas de preprocesamiento
+    ├── test_neural_network.py    # Pruebas de la arquitectura y gradient checking
+    ├── test_training_and_evaluation.py # Pruebas de entrenamiento e inferencia
+    ├── test_webcam_demo.py       # Pruebas del preprocesamiento y renderizado de webcam
+    └── test_robot_controller.py  # Pruebas del filtro de seguridad y simulador robótico
 ```
 
 ---
@@ -77,8 +83,56 @@ El objetivo principal es académico: comprender a fondo la formulación matemát
 - [x] **Fase 3:** Preprocesamiento y división estratificada (Train / Val / Test).
 - [x] **Fase 4:** Implementación de la Red Neuronal desde cero con NumPy.
 - [x] **Fase 5:** Pruebas unitarias matemáticas y gradiente.
-- [ ] **Fase 6:** Entrenamiento y registro de métricas reales ⏸️ *(Punto de pausa actual)*.
-- [ ] **Fase 7:** Evaluación en conjunto de prueba y matriz de confusión.
-- [ ] **Fase 8:** Inferencia en imágenes individuales.
-- [ ] **Fase 9:** Demostración webcam (opcional y posterior).
-- [ ] **Fase 10:** Adaptación a comandos robóticos (STOP, FORWARD, etc.).
+- [x] **Fase 6:** Entrenamiento por mini-lotes y registro de curvas reales.
+- [x] **Fase 7:** Evaluación en conjunto de prueba y matriz de confusión.
+- [x] **Fase 8:** Inferencia en imágenes individuales con diagnóstico visual.
+- [x] **Fase 9:** Demostración interactiva con Webcam y HUD en tiempo real.
+- [x] **Fase 10:** Adaptación a comandos robóticos (Filtro de seguridad, consenso temporal y asistente de captura).
+
+---
+
+## ⚡ Guía de Ejecución
+
+### 1. Entrenar el modelo
+```powershell
+python -m src.train --epocas 50 --batch-size 32 --lr 0.03
+```
+Genera:
+- Pesos del modelo: `models/rps_model.npz`
+- Historial en CSV: `outputs/logs/training_history.csv`
+- Curvas de aprendizaje: `outputs/figures/training_curves.png`
+
+### 2. Evaluar el modelo en el conjunto de prueba
+```powershell
+python -m src.evaluate
+```
+Genera:
+- Reporte detallado de métricas (Precision, Recall, F1, Accuracy): `outputs/logs/evaluation_report.json`
+- Gráfica de Matriz de Confusión: `outputs/figures/confusion_matrix.png`
+- Ejemplos de aciertos y errores: `outputs/figures/evaluation_samples.png`
+
+### 3. Clasificar una imagen aislada
+```powershell
+# Ejecutar demostración automática:
+python -m src.predict_image --demo
+
+# Clasificar una imagen específica:
+python -m src.predict_image ruta/a/imagen.png
+```
+
+### 4. Demostración en vivo con Webcam (HUD en tiempo real)
+```powershell
+python -m src.webcam_demo
+```
+*Controles: Presiona 'q' o ESC para salir; 's' para capturar y guardar el fotograma actual.*
+
+### 5. Capturar dataset personalizado para los 5 comandos del robot
+```powershell
+python scripts/capture_robot_dataset.py
+```
+*Permite capturar imágenes de `STOP`, `FORWARD`, `LEFT`, `RIGHT` y `BACKWARD` en `data/robot_raw/`.*
+
+### 6. Ejecutar la suite completa de pruebas automáticas (22 pruebas)
+```powershell
+python -m pytest -v
+```

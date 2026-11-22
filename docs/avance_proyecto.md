@@ -107,21 +107,55 @@
   - **12 de 12 pruebas pasadas exitosamente (100% pass)** en 0.70 segundos.
   - Error relativo en $W_2$: $9.99 \times 10^{-9} < 10^{-6}$.
   - Error relativo en $W_1$: $1.34 \times 10^{-8} < 10^{-6}$.
-- **Siguiente Fase:** Fase 6 (Entrenamiento completo por mini-lotes, validación por época, guardado de curvas en `outputs/figures/` y mejor modelo en `models/rps_model.npz`).
+- **Siguiente Fase:** Fase 6 completada.
 
 ### Fase 6: Entrenamiento y Registro de Curvas
-- **Estado:** ⏸️ **EN PAUSA (Punto de reanudación para la siguiente sesión)**.
-- **Acciones Pendientes para Continuar:**
-  - Crear e implementar `src/train.py`.
-  - Configurar hiperparámetros de partida: 35 épocas, mini-batches de 32, tasa de aprendizaje de 0.05.
-  - Ejecutar entrenamiento con barajado de datos en cada época.
-  - Guardar el mejor modelo en `models/rps_model.npz`.
-  - Registrar métricas por época en `outputs/logs/training_history.csv`.
-  - Generar gráfica de curvas de pérdida y accuracy en `outputs/figures/training_curves.png`.
-  - Evaluar modelo resultante (Fase 7).
+- **Estado:** ✅ Completado.
+- **Acciones y Resultados:**
+  - Implementación de `src/train.py` con descenso de gradiente por mini-lotes (batch size: 32, $\eta = 0.03$, 50 épocas).
+  - Mejor época alcanzada: **Época 48** (Pérdida Val: $0.5963$, Exactitud Val: $77.44\%$, Exactitud Train: $82.30\%$).
+  - Pesos óptimos guardados en `models/rps_model.npz`.
+  - Historial completo por época exportado a `outputs/logs/training_history.csv`.
+  - Curvas de pérdida y exactitud generadas en `outputs/figures/training_curves.png`.
 
 ### Fase 7: Evaluación Final y Matriz de Confusión
-- **Estado:** ⏹ Pendiente.
+- **Estado:** ✅ Completado.
+- **Acciones y Resultados:**
+  - Implementación de `src/evaluate.py` para evaluación sobre las 329 muestras independientes de test.
+  - **Exactitud Global en Test:** **$75.38\%$** ($248 / 329$ aciertos).
+  - **Pérdida Cross-Entropy en Test:** $0.6269$.
+  - **Desglose de métricas:**
+    - Piedra (`rock`): Precisión $76.11\%$, Recall $78.90\%$, F1 $77.48\%$.
+    - Papel (`paper`): Precisión $72.87\%$, Recall $87.85\%$, F1 $79.66\%$.
+    - Tijera (`scissors`): Precisión $78.16\%$, Recall $60.18\%$, F1 $68.00\%$.
+    - Macro F1: $75.05\%$. F1 Ponderado: $74.93\%$.
+  - Matriz de confusión visual guardada en `outputs/figures/confusion_matrix.png`.
+  - Análisis cualitativo de aciertos y errores en `outputs/figures/evaluation_samples.png`.
+  - Reporte estructurado guardado en `outputs/logs/evaluation_report.json`.
 
 ### Fase 8: Inferencia sobre Imágenes Nuevas
-- **Estado:** ⏹ Pendiente.
+- **Estado:** ✅ Completado.
+- **Acciones y Resultados:**
+  - Implementación de `src/predict_image.py`.
+  - Soporta inferencia por CLI sobre cualquier imagen JPG/PNG o en modo demo (`--demo`).
+  - Muestra distribución de probabilidades Softmax y emite advertencias técnicas sobre condiciones de iluminación y fondo.
+  - Genera diagnóstico visual comparativo en `outputs/figures/prediction_demo.png`.
+
+### Fase 9: Demostración Interactiva con Webcam en Tiempo Real
+- **Estado:** ✅ Completado.
+- **Acciones y Resultados:**
+  - Implementación de `src/webcam_demo.py` utilizando OpenCV únicamente para captura de video y HUD visual.
+  - La inferencia matemática se ejecuta directamente mediante el forward propagation de `RedNeuronal` (NumPy).
+  - Preprocesamiento de la región de interés (ROI) a $28 \times 28$ píxeles en escala de grises y normalización $[0.0, 1.0]$.
+  - Visualización en vivo con barras de probabilidad, FPS, traducción de clases al español y ventana de depuración de la entrada procesada.
+
+### Fase 10: Adaptación a Comandos Robóticos y Seguridad
+- **Estado:** ✅ Completado.
+- **Acciones y Resultados:**
+  - Implementación del script de recolección de datos guiado en `scripts/capture_robot_dataset.py` para almacenar imágenes de los 5 comandos (`STOP`, `FORWARD`, `LEFT`, `RIGHT`, `BACKWARD`) en `data/robot_raw/`.
+  - Capa de seguridad y control en `src/robot_controller.py`:
+    - **Filtro de Umbral de Confianza:** Predicciones con confianza $< 70\%$ fuerzan el estado seguro `STOP`.
+    - **Consenso Temporal:** Se requiere la confirmación idéntica durante $3$ fotogramas seguidos antes de conmutar comandos de movimiento, evitando sacudidas en los motores.
+    - **Controlador Robótico Desacoplado:** Soporte para simulación virtual (`SimuladorRobot`) y enlace serie (`ControladorSerialRobot`) con parada de emergencia.
+  - Validación con pruebas unitarias en `tests/test_robot_controller.py` y `tests/test_webcam_demo.py` (22 pruebas totales pasando al 100%).
+
