@@ -120,11 +120,17 @@ python -m src.predict_image --demo
 python -m src.predict_image ruta/a/imagen.png
 ```
 
-### 4. Demostración en vivo con Webcam (HUD en tiempo real)
+### 4. Demostración en vivo con Webcam y Control de Robot (HUD en tiempo real)
+El modelo entrenado ya viene preinstalado en `models/rps_model.npz`, por lo que puedes ejecutar la demostración directamente sin necesidad de re-entrenar:
+
 ```powershell
-python -m src.webcam_demo
+# Modo simulador de robot (sin hardware conectado):
+python -m src.webcam_demo --simular-robot
+
+# Conectado físicamente al ESP32 / Arduino (ejemplo puerto COM3):
+python -m src.webcam_demo --puerto-robot COM3 --umbral-confianza 0.75 --consenso-frames 3
 ```
-*Controles: Presiona 'q' o ESC para salir; 's' para capturar y guardar el fotograma actual.*
+*Controles: Presiona 'q' o ESC para salir; 's' para capturar foto; 'e' o ESPACIO para parada de emergencia (E-Stop).*
 
 ### 5. Capturar dataset personalizado para los 5 comandos del robot
 ```powershell
@@ -132,7 +138,7 @@ python scripts/capture_robot_dataset.py
 ```
 *Permite capturar imágenes de `STOP`, `FORWARD`, `LEFT`, `RIGHT` y `BACKWARD` en `data/robot_raw/`.*
 
-### 6. Ejecutar la suite completa de pruebas automáticas (22 pruebas)
+### 6. Ejecutar la suite completa de pruebas automáticas (23 pruebas)
 ```powershell
 python -m pytest -v
 ```

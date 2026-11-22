@@ -1,0 +1,55 @@
+{
+    "dataset_test_samples": 329,
+    "total_aciertos": 248,
+    "test_accuracy": 0.7537993920972644,
+    "test_loss": 0.6269057989120483,
+    "matriz_confusion": [
+        [
+            86,
+            13,
+            10
+        ],
+        [
+            4,
+            94,
+            9
+        ],
+        [
+            23,
+            22,
+            68
+        ]
+    ],
+    "metricas_por_clase": {
+        "rock (Piedra)": {
+            "precision": 0.7610619469026548,
+            "recall": 0.7889908256880734,
+            "f1_score": 0.7747747747747747,
+            "soporte": 109
+        },
+        "paper (Papel)": {
+            "precision": 0.7286821705426356,
+            "recall": 0.8785046728971962,
+            "f1_score": 0.7966101694915255,
+            "soporte": 107
+        },
+        "scissors (Tijera)": {
+            "precision": 0.7816091954022989,
+            "recall": 0.6017699115044248,
+            "f1_score": 0.68,
+            "soporte": 113
+        },
+        "Promedio Macro": {
+            "precision": 0.7571177709491964,
+            "recall": 0.7564218033632315,
+            "f1_score": 0.7504616480887668,
+            "soporte": 329
+        },
+        "Promedio Ponderado": {
+            "precision": 0.7575883998203987,
+            "recall": 0.7537993920972644,
+            "f1_score": 0.7493244333922301,
+            "soporte": 329
+        }
+    }
+}

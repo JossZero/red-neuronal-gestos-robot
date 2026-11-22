@@ -17,14 +17,10 @@ data/raw/
 data/processed/
 data/robot_raw/
 
-# Modelos y pesos entrenados pesados
-models/*.npz
+# Modelos y pesos (se incluye rps_model.npz para ejecucion plug-and-play en laptops)
 models/*.npy
 
-# Salidas y logs
-outputs/logs/
-outputs/figures/*.png
-outputs/figures/*.jpg
+# Salidas temporales de la webcam
 outputs/captures/
 
 # Archivos de sistema y editores
